@@ -1,4 +1,4 @@
-import { loginUser, setCookieFunc } from "@/functions/account.functions";
+import { loginUser} from "@/functions/account.functions";
 import { UserDTO } from "@/schemas/user.schema";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -16,15 +16,13 @@ const initialValues: UserDTO = {
 };
 function RouteComponent() {
   const userCreateFun = useServerFn(loginUser);
-  const cookieFunc = useServerFn(setCookieFunc);
+ 
   const m = useMutation({
     mutationFn: (values: UserDTO) => {
       return userCreateFun({ data: values });
     },
     onSuccess: (response) => {
-      if (response && response.token) {
-        cookieFunc({data:{token:response?.token}});
-      }
+      console.log(response);
     },
   });
   const handleSubmit = (values: UserDTO) => {

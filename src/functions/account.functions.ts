@@ -5,7 +5,6 @@ import { createServerFn } from "@tanstack/react-start";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
-import z from "zod";
 
 export const registerUser = createServerFn({ method: "POST" })
   .inputValidator(UserSchema)
@@ -15,7 +14,7 @@ export const registerUser = createServerFn({ method: "POST" })
       const user = (await UserModel.findOne({
         email: data.email,
       }).lean()) as User;
-      console.log("USER IS HERE " + user);
+  
       if (user) {
         throw new Error("User already Exists");
       } else {
@@ -52,8 +51,13 @@ export const loginUser = createServerFn({ method: "POST" })
           };
 
           const token = jwt.sign(userPayload, "12345");
-          console.log(token);
-          return { token };
+          return new Response("OK", {
+            status: 200,
+            headers: {
+             "Set-Cookie": `auth=Bearer ${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`,
+            },
+          });
+        
         } else {
           throw new Error("Invalid Credentials");
         }
@@ -67,16 +71,16 @@ export const loginUser = createServerFn({ method: "POST" })
     }
   });
 
-export const setCookieFunc = createServerFn({ method: "POST" })
-  .inputValidator((data: { token: string }) => data)
-  .handler(async ({ data }) => {
-    try {
-      // const decoded = jwt.verify(data.token, "12345");
-      return new Response("OK", {
-        status: 200,
-        headers: {
-          "Set-Cookie": `Bearer ${data.token}; Path=/; HttpOnly; Secure; SameSite=Strict Max-Age=604800` ,
-        },
-      });
-    } catch (err) {}
-  });
+export const logoutUser = createServerFn({ method: "POST" }).handler(
+  async () => {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        "Set-Cookie":
+          "auth=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0",
+      
+      },
+    });
+   
+  }
+);

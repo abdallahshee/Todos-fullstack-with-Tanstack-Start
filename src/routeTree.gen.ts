@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as TodosCreateRouteImport } from './routes/todos/create'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
+import { Route as AccountHomeRouteImport } from './routes/account/home'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,15 +35,22 @@ const AccountRegisterRoute = AccountRegisterRouteImport.update({
   path: '/account/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountHomeRoute = AccountHomeRouteImport.update({
+  id: '/account/home',
+  path: '/account/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account/home': typeof AccountHomeRoute
   '/account/register': typeof AccountRegisterRoute
   '/todos/create': typeof TodosCreateRoute
   '/account': typeof AccountIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account/home': typeof AccountHomeRoute
   '/account/register': typeof AccountRegisterRoute
   '/todos/create': typeof TodosCreateRoute
   '/account': typeof AccountIndexRoute
@@ -50,20 +58,33 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account/home': typeof AccountHomeRoute
   '/account/register': typeof AccountRegisterRoute
   '/todos/create': typeof TodosCreateRoute
   '/account/': typeof AccountIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/account/register' | '/todos/create' | '/account'
+  fullPaths:
+    | '/'
+    | '/account/home'
+    | '/account/register'
+    | '/todos/create'
+    | '/account'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/account/register' | '/todos/create' | '/account'
-  id: '__root__' | '/' | '/account/register' | '/todos/create' | '/account/'
+  to: '/' | '/account/home' | '/account/register' | '/todos/create' | '/account'
+  id:
+    | '__root__'
+    | '/'
+    | '/account/home'
+    | '/account/register'
+    | '/todos/create'
+    | '/account/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountHomeRoute: typeof AccountHomeRoute
   AccountRegisterRoute: typeof AccountRegisterRoute
   TodosCreateRoute: typeof TodosCreateRoute
   AccountIndexRoute: typeof AccountIndexRoute
@@ -99,11 +120,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/home': {
+      id: '/account/home'
+      path: '/account/home'
+      fullPath: '/account/home'
+      preLoaderRoute: typeof AccountHomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountHomeRoute: AccountHomeRoute,
   AccountRegisterRoute: AccountRegisterRoute,
   TodosCreateRoute: TodosCreateRoute,
   AccountIndexRoute: AccountIndexRoute,

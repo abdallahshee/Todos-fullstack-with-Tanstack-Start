@@ -8,7 +8,8 @@ export interface Todo {
   _id: { type: String, unique: true },
   title: { type: String },
   userId: { type: String, unique: true },
-});
+},
+ {_id:false});
 
 export const TodoModel =
    mongoose.models.Todo || mongoose.model<Todo>("todos", TodoSchema);

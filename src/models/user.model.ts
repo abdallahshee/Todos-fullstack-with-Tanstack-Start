@@ -10,7 +10,7 @@ export interface User{
         email:{type:String, unique:true},
         password:{type:String, unique:true}
     },
- 
+ {_id:false}
 )
 
 export const UserModel=mongoose.models.User || mongoose.model<User>("users", UserSchema)
