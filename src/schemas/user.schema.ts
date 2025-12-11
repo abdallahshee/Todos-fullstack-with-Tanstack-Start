@@ -7,3 +7,8 @@ export const UserSchema=z.object({
 
 
 export type UserDTO=z.infer<typeof UserSchema>
+
+export enum AppContext{
+    isAuthenticated="isAuthenticated",
+    currentUser="currentUser"
+}

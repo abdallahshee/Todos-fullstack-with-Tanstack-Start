@@ -1,4 +1,4 @@
-import { authMiddleware } from "@/middlewares/authMiddleware";
+import { authMiddleware} from "@/middlewares/authMiddleware";
 import { connectDB } from "@/models/Database";
 import { Todo, TodoModel } from "@/models/todo.model";
 import {  TodoSchema } from "@/schemas/todo.schema";
@@ -10,7 +10,6 @@ export const createTodo = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .handler(async ({ data,context }) => {
     try {
-      console.log('Here is the currentUser '+JSON.stringify(context?.currentUser));
       await connectDB();
       const newTodo: Todo = {
         _id: nanoid(7), // already a string

@@ -4,6 +4,9 @@ export interface User{
     email:string
     password:string
 }
+
+export type userNoPassword = Omit<User, "password">;
+
  const UserSchema=new mongoose.Schema<User>(
     {
         _id:{type:String, unique:true},

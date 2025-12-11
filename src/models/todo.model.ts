@@ -4,6 +4,7 @@ export interface Todo {
   title: string;
   userId: string;
 }
+
  const TodoSchema = new mongoose.Schema<Todo>({
   _id: { type: String, unique: true },
   title: { type: String },

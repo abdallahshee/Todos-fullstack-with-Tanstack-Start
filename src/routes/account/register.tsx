@@ -1,4 +1,4 @@
-import { registerUser } from "@/functions/account.functions";
+import { registerUser } from "@/functions/user.functions";
 import { UserDTO } from "@/schemas/user.schema";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";

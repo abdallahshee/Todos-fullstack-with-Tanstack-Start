@@ -13,9 +13,12 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import {  userNoPassword } from '@/models/user.model'
 
 interface MyRouterContext {
   queryClient: QueryClient
+  currentUser:userNoPassword|null
+  isAuthenticated:boolean
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

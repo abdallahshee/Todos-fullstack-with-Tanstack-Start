@@ -1,5 +1,5 @@
 import { connectDB } from "@/models/Database";
-import { User, UserModel } from "@/models/user.model";
+import { User, UserModel, userNoPassword } from "@/models/user.model";
 import { UserSchema } from "@/schemas/user.schema";
 import { createServerFn } from "@tanstack/react-start";
 import bcrypt from "bcryptjs";
@@ -14,7 +14,6 @@ export const registerUser = createServerFn({ method: "POST" })
       const user = (await UserModel.findOne({
         email: data.email,
       }).lean()) as User;
-  
       if (user) {
         throw new Error("User already Exists");
       } else {
@@ -38,26 +37,25 @@ export const loginUser = createServerFn({ method: "POST" })
   .inputValidator(UserSchema)
   .handler(async ({ data }) => {
     try {
+      await connectDB();
       const user = (await UserModel.findOne({
         email: data.email,
       }).lean()) as User;
       if (user) {
         const valid = await bcrypt.compare(data.password, user.password);
         if (valid) {
-          type userNoPassword = Omit<User, "password">;
           const userPayload: userNoPassword = {
             _id: user._id,
             email: user.email,
           };
-
           const token = jwt.sign(userPayload, "12345");
-          return new Response("OK", {
+          return new Response(JSON.stringify({ user: userPayload }), {
             status: 200,
             headers: {
-             "Set-Cookie": `auth=Bearer ${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`,
+              "Content-Type": "application/json", // important for JSON
+              "Set-Cookie": `auth=Bearer ${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`,
             },
           });
-        
         } else {
           throw new Error("Invalid Credentials");
         }
@@ -78,9 +76,7 @@ export const logoutUser = createServerFn({ method: "POST" }).handler(
       headers: {
         "Set-Cookie":
           "auth=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0",
-      
       },
     });
-   
   }
 );
