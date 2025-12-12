@@ -8,7 +8,7 @@ export interface Todo {
  const TodoSchema = new mongoose.Schema<Todo>({
   _id: { type: String, unique: true },
   title: { type: String },
-  userId: { type: String, unique: true },
+  userId: { type: String}
 },
  {_id:false});
 

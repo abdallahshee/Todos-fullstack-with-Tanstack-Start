@@ -2,7 +2,7 @@ import { createTodo } from "@/functions/todos.functions";
 import { TodoDTO } from "@/schemas/todo.schema";
 import { useAuthStore } from "@/stores.ts/authStore";
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Formik, Form, Field } from "formik";
 import { Button } from "primereact/button";
@@ -20,21 +20,24 @@ beforeLoad() {
 });
 const initialValues: TodoDTO = {
   title: "",
-  userId: "",
+
 };
 function RouteComponent() {
   const createTodoFn = useServerFn(createTodo);
+  const router=useRouter()
   const m = useMutation({
     mutationFn: (values: TodoDTO) => {
       return createTodoFn({
         data: {
           title: values.title,
-          userId: values.userId,
+       
         },
       });
     },
     onSuccess: (result) => {
       console.log("RESULT FROM SERVER:", result);
+      router.navigate({to:"/todos"})
+
     },
     onError:(err)=>{
       console.log("Error encountered");
@@ -53,10 +56,7 @@ function RouteComponent() {
               <label>Title :</label>
               <Field name="title" />
             </div>
-            <div>
-              <label>User iD :</label>
-              <Field name="userId" />
-            </div>
+
             <div>
               <Button label="create" type="submit" />
             </div>

@@ -14,8 +14,9 @@ export const createTodo = createServerFn({ method: "POST" })
       const newTodo: Todo = {
         _id: nanoid(7), // already a string
         title: data.title,
-        userId: data.userId
+        userId: context?.currentUser?._id
       };
+      console.log('USER ID '+ context?.currentUser?._id);
       const item=await TodoModel.create(newTodo);
       return JSON.stringify(item)
     } catch (err) {

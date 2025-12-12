@@ -1,14 +1,18 @@
 import { logoutUser } from "@/functions/user.functions";
 import { useAuthStore } from "@/stores.ts/authStore";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "primereact/button";
 
 const Header = () => {
+  const router=useRouter()
   const logoutFunc = useServerFn(logoutUser);
   const handleClick = () => {
-    logoutFunc();
-    useAuthStore.setState({isAuthenticated:false,user:null})
+    logoutFunc().then(()=>{
+  useAuthStore.setState({isAuthenticated:false,user:null})
+      router.navigate({to:"/account"})
+    })
+  
   };
   return (
     <div>

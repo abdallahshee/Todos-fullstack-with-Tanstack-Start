@@ -1,18 +1,21 @@
 import { createMiddleware } from "@tanstack/react-start";
 import jwt from "jsonwebtoken";
 import {redirect} from '@tanstack/react-router'
+import { userNoPassword } from "@/models/user.model";
 
 export const authMiddleware = createMiddleware().server(
-  ({ next, request }) => {
+  ({ next, request}) => {
     const cookieHeader = request.headers.get("Cookie");
     console.log("First Middleware");
     const token =  cookieHeader?.split(" ")[1];
     if (token) {
       try {
-       const decoded= jwt.verify(token, "12345");
+        const secret_key=process.env.JWT_SECRET ||""
+        const decoded=jwt.verify(token, secret_key) as userNoPassword
         return next({
           context: {
             isAuthenticated: true,
+            currentUser:decoded
           },
         });
       } catch (err) {

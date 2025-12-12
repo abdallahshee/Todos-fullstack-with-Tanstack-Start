@@ -48,7 +48,8 @@ export const loginUser = createServerFn({ method: "POST" })
             _id: user._id,
             email: user.email,
           };
-          const token = jwt.sign(userPayload, "12345");
+          const secret_key=process.env.JWT_SECRET ||""
+          const token = jwt.sign(userPayload, secret_key);
           return new Response(JSON.stringify({ user: userPayload }), {
             status: 200,
             headers: {

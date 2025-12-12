@@ -11,7 +11,7 @@ export type userNoPassword = Omit<User, "password">;
     {
         _id:{type:String, unique:true},
         email:{type:String, unique:true},
-        password:{type:String, unique:true}
+        password:{type:String}
     },
  {_id:false}
 )

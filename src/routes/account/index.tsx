@@ -30,7 +30,7 @@ function RouteComponent() {
         user: data.user,
         isAuthenticated: true,
       });
-      router.navigate({to:'/account/home'})
+      router.navigate({to:'/todos/create'})
     },
   });
   const handleSubmit = (values: UserDTO) => {
