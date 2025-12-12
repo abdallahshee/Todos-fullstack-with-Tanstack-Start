@@ -1,5 +1,5 @@
 import { loginUser } from "@/functions/user.functions";
-import { UserDTO } from "@/schemas/user.schema";
+import { LoginDTO} from "@/schemas/user.schema";
 import { useAuthStore } from "@/stores.ts/authStore";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
@@ -12,15 +12,15 @@ export const Route = createFileRoute("/account/")({
   component: RouteComponent,
 });
 
-const initialValues: UserDTO = {
+const initialValues: LoginDTO = {
   email: "",
   password: "",
 };
 function RouteComponent() {
   const userLoginFunc = useServerFn(loginUser);
-  const router=useRouter()
+  const router = useRouter();
   const m = useMutation({
-    mutationFn: (values: UserDTO) => userLoginFunc({ data: values }),
+    mutationFn: (values: LoginDTO) => userLoginFunc({ data: values }),
     onSuccess: async (res) => {
       if (!res) return; // guard clause
 
@@ -30,10 +30,10 @@ function RouteComponent() {
         user: data.user,
         isAuthenticated: true,
       });
-      router.navigate({to:'/todos/create'})
+      router.navigate({ to: "/todos/create" });
     },
   });
-  const handleSubmit = (values: UserDTO) => {
+  const handleSubmit = (values: LoginDTO) => {
     // console.log(values);
     m.mutate(values);
   };
@@ -44,6 +44,7 @@ function RouteComponent() {
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({}) => (
             <Form>
+
               <div>
                 <label>Email :</label>
                 <Field name="email" />

@@ -1,5 +1,5 @@
-import { createTodo } from "@/functions/todos.functions";
-import { TodoDTO } from "@/schemas/todo.schema";
+import { createTodo } from "@/functions/post.functions";
+import { PostDTO } from "@/schemas/post.schema";
 import { useAuthStore } from "@/stores.ts/authStore";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
@@ -18,7 +18,7 @@ beforeLoad() {
 },
   component: RouteComponent,
 });
-const initialValues: TodoDTO = {
+const initialValues: PostDTO = {
   title: "",
 
 };
@@ -26,7 +26,7 @@ function RouteComponent() {
   const createTodoFn = useServerFn(createTodo);
   const router=useRouter()
   const m = useMutation({
-    mutationFn: (values: TodoDTO) => {
+    mutationFn: (values: PostDTO) => {
       return createTodoFn({
         data: {
           title: values.title,
@@ -43,7 +43,7 @@ function RouteComponent() {
       console.log("Error encountered");
     }
   });
-  const handleSubmit = (values: TodoDTO) => {
+  const handleSubmit = (values: PostDTO) => {
     m.mutate(values);
   };
   return (

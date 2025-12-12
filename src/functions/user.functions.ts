@@ -1,6 +1,6 @@
 import { connectDB } from "@/models/Database";
 import { User, UserModel, userNoPassword } from "@/models/user.model";
-import { UserSchema } from "@/schemas/user.schema";
+import { LoginSchema, UserSchema } from "@/schemas/user.schema";
 import { createServerFn } from "@tanstack/react-start";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
@@ -20,6 +20,9 @@ export const registerUser = createServerFn({ method: "POST" })
         const hashedPassword = await bcrypt.hash(data.password, 10);
         const newuser: User = {
           _id: nanoid(8),
+          lastlogin: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
           ...data,
           password: hashedPassword,
         };
@@ -34,7 +37,7 @@ export const registerUser = createServerFn({ method: "POST" })
   });
 
 export const loginUser = createServerFn({ method: "POST" })
-  .inputValidator(UserSchema)
+  .inputValidator(LoginSchema)
   .handler(async ({ data }) => {
     try {
       await connectDB();
@@ -47,8 +50,13 @@ export const loginUser = createServerFn({ method: "POST" })
           const userPayload: userNoPassword = {
             _id: user._id,
             email: user.email,
+            firstName: user.firstName,
+            lastName:user.lastName,
+            createdAt:user.createdAt,
+            updatedAt:user.updatedAt,
+            lastlogin:new Date
           };
-          const secret_key=process.env.JWT_SECRET ||""
+          const secret_key = process.env.JWT_SECRET || "";
           const token = jwt.sign(userPayload, secret_key);
           return new Response(JSON.stringify({ user: userPayload }), {
             status: 200,
