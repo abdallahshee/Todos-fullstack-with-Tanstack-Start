@@ -1,4 +1,4 @@
-import { loginUser } from "@/functions/user.functions";
+import { loginUser } from "@/functions/account.functions";
 import { LoginDTO, LoginSchema } from "@/schemas/user.schema";
 import { useAuthStore } from "@/stores.ts/authStore";
 import { useMutation } from "@tanstack/react-query";
@@ -42,7 +42,7 @@ function RouteComponent() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ ...initialValues, rememberMe: false }}
       validationSchema={LoginSchema}
       onSubmit={handleLogin}
     >
@@ -75,9 +75,9 @@ function RouteComponent() {
             </ErrorMessage>
           </Form.Group>
 
+          {/* PASSWORD */}
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
-
             <InputGroup>
               <Form.Control
                 type={showPassword ? "text" : "password"}
@@ -88,10 +88,10 @@ function RouteComponent() {
                 onBlur={handleBlur}
                 isInvalid={!!errors.password && touched.password}
               />
-
               <Button
                 variant="outline-secondary"
                 onClick={() => setShowPassword((prev) => !prev)}
+                type="button"
               >
                 {showPassword ? <EyeSlash /> : <Eye />}
               </Button>
@@ -105,15 +105,30 @@ function RouteComponent() {
             </InputGroup>
           </Form.Group>
 
-          <Form.Group className="3">
+          {/* REMEMBER ME & FORGOT PASSWORD */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <Form.Check
+              type="checkbox"
+              label="Remember Me"
+              name="rememberMe"
+              checked={values.rememberMe}
+              onChange={handleChange}
+            />
+            <Link to="/account/reset">Forgot Password?</Link>
+          </div>
+
+          {/* SUBMIT BUTTON */}
+          <Form.Group className="mb-3">
             <Button type="submit" className="w-100" disabled={m.isPending}>
               {m.isPending ? "Logging in..." : "Login"}
             </Button>
           </Form.Group>
-          <Form.Group className="mt-3">
+
+          {/* REGISTER LINK */}
+          <Form.Group className="mt-3 text-center">
             <h5>
-              Dont have an account{" "}
-              <Link to="/account/register"> Click Here</Link> to register
+              Don't have an account?{" "}
+              <Link to="/account/register">Click Here</Link> to register
             </h5>
           </Form.Group>
         </Form>

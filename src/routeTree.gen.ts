@@ -9,15 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsIndexRouteImport } from './routes/posts/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as PostsCreateRouteImport } from './routes/posts/create'
+import { Route as AccountResetRouteImport } from './routes/account/reset'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as AccountHomeRouteImport } from './routes/account/home'
 import { Route as PostsPostIdDetailsRouteImport } from './routes/posts/$postId.details'
 
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountRouteRoute = AccountRouteRouteImport.update({
   id: '/account',
   path: '/account',
@@ -43,6 +50,11 @@ const PostsCreateRoute = PostsCreateRouteImport.update({
   path: '/posts/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountResetRoute = AccountResetRouteImport.update({
+  id: '/reset',
+  path: '/reset',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
 const AccountRegisterRoute = AccountRegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -62,8 +74,10 @@ const PostsPostIdDetailsRoute = PostsPostIdDetailsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/account/home': typeof AccountHomeRoute
   '/account/register': typeof AccountRegisterRoute
+  '/account/reset': typeof AccountResetRoute
   '/posts/create': typeof PostsCreateRoute
   '/account/': typeof AccountIndexRoute
   '/posts': typeof PostsIndexRoute
@@ -71,8 +85,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/account/home': typeof AccountHomeRoute
   '/account/register': typeof AccountRegisterRoute
+  '/account/reset': typeof AccountResetRoute
   '/posts/create': typeof PostsCreateRoute
   '/account': typeof AccountIndexRoute
   '/posts': typeof PostsIndexRoute
@@ -82,8 +98,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/account/home': typeof AccountHomeRoute
   '/account/register': typeof AccountRegisterRoute
+  '/account/reset': typeof AccountResetRoute
   '/posts/create': typeof PostsCreateRoute
   '/account/': typeof AccountIndexRoute
   '/posts/': typeof PostsIndexRoute
@@ -94,8 +112,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/about'
     | '/account/home'
     | '/account/register'
+    | '/account/reset'
     | '/posts/create'
     | '/account/'
     | '/posts'
@@ -103,8 +123,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/account/home'
     | '/account/register'
+    | '/account/reset'
     | '/posts/create'
     | '/account'
     | '/posts'
@@ -113,8 +135,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/account'
+    | '/about'
     | '/account/home'
     | '/account/register'
+    | '/account/reset'
     | '/posts/create'
     | '/account/'
     | '/posts/'
@@ -124,6 +148,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   PostsCreateRoute: typeof PostsCreateRoute
   PostsIndexRoute: typeof PostsIndexRoute
   PostsPostIdDetailsRoute: typeof PostsPostIdDetailsRoute
@@ -131,6 +156,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/account': {
       id: '/account'
       path: '/account'
@@ -166,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/reset': {
+      id: '/account/reset'
+      path: '/reset'
+      fullPath: '/account/reset'
+      preLoaderRoute: typeof AccountResetRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
     '/account/register': {
       id: '/account/register'
       path: '/register'
@@ -193,12 +232,14 @@ declare module '@tanstack/react-router' {
 interface AccountRouteRouteChildren {
   AccountHomeRoute: typeof AccountHomeRoute
   AccountRegisterRoute: typeof AccountRegisterRoute
+  AccountResetRoute: typeof AccountResetRoute
   AccountIndexRoute: typeof AccountIndexRoute
 }
 
 const AccountRouteRouteChildren: AccountRouteRouteChildren = {
   AccountHomeRoute: AccountHomeRoute,
   AccountRegisterRoute: AccountRegisterRoute,
+  AccountResetRoute: AccountResetRoute,
   AccountIndexRoute: AccountIndexRoute,
 }
 
@@ -209,6 +250,7 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRouteRoute: AccountRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   PostsCreateRoute: PostsCreateRoute,
   PostsIndexRoute: PostsIndexRoute,
   PostsPostIdDetailsRoute: PostsPostIdDetailsRoute,

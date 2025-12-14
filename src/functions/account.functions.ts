@@ -28,6 +28,7 @@ export const registerUser = createServerFn({ method: "POST" })
           ...data,
           role:"User",
           password: hashedPassword,
+          url:"https://avatars.dicebear.com/api/bottts/user1.svg"
         };
         const insertedItem = await UserModel.create(newuser);
         return JSON.stringify(insertedItem);
@@ -59,7 +60,8 @@ export const loginUser = createServerFn({ method: "POST" })
             createdAt:user.createdAt,
             updatedAt:user.updatedAt,
             lastlogin:new Date,
-            role:user.role
+            role:user.role,
+            url:user.url
           };
           const secret_key = process.env.JWT_SECRET || "";
           const token = jwt.sign(userPayload, secret_key);
@@ -94,3 +96,7 @@ export const logoutUser = createServerFn({ method: "POST" }).handler(
     });
   }
 );
+
+export const sendPasswordReset=createServerFn().handler(async()=>{
+  return ""
+})

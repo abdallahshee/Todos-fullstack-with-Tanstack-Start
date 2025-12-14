@@ -10,6 +10,7 @@ export interface User {
   updatedAt:Date,
   role:UserRole,
   lastlogin:Date |undefined
+  url:string
 }
 
 export type userNoPassword = Omit<User, "password">;
@@ -24,7 +25,11 @@ const UserSchema = new mongoose.Schema<User>(
     updatedAt:{type:Date},
     createdAt:{type:Date},
     lastlogin:{type:Date },
-    role:{type:String, enum:["Admin","User"]}
+    role:{type:String, enum:["Admin","User"]},
+    url:{
+      type:String,
+       default:"https://avatars.dicebear.com/api/bottts/user1.svg"
+    }
   },
   {timestamps:true, _id:false}
  

@@ -1,11 +1,11 @@
-import { registerUser } from "@/functions/user.functions";
+import { registerUser } from "@/functions/account.functions";
 import { UserDTO, UserSchema } from "@/schemas/user.schema";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ErrorMessage, Formik } from "formik";
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 export const Route = createFileRoute("/account/register")({
   component: RouteComponent,
