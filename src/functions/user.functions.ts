@@ -5,10 +5,10 @@ import { createServerFn } from "@tanstack/react-start";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
-import { yupValidator } from "@/middlewares/yupValidator";
+import { yupInputValidator } from "@/schemas/validation.schemas";
 
 export const registerUser = createServerFn({ method: "POST" })
-   .inputValidator(yupValidator(UserSchema))
+   .inputValidator(yupInputValidator(UserSchema))
   .handler(async ({ data }) => {
     try {
       console.log("DATA IS HERE "+JSON.stringify(data));
@@ -40,7 +40,7 @@ export const registerUser = createServerFn({ method: "POST" })
   });
 
 export const loginUser = createServerFn({ method: "POST" })
- .inputValidator(yupValidator(LoginSchema))
+ .inputValidator(yupInputValidator(LoginSchema))
   .handler(async ({ data }) => {
     try {
       console.log("DATA IS HERE "+JSON.stringify(data));

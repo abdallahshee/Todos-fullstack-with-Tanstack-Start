@@ -13,7 +13,7 @@ export interface Post {
 }
 
 export interface GetMyPostsInput {
-  status?: PostStatus; // optional filter
+  status?: PostStatus
 }
 export type PostStatus = "Pending" | "Published" | "Rejected";
 const PostSchema = new mongoose.Schema<Post>(

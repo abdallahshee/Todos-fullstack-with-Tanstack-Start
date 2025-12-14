@@ -1,21 +1,49 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { logoutUser } from "@/functions/user.functions";
+import { useAuthStore } from "@/stores.ts/authStore";
+import { Link, useRouter } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 
-export const NavbarComponent=() =>{
+export const NavbarComponent = () => {
+  const isAuthenticated = useAuthStore.getState().isAuthenticated;
+  const currentUser = useAuthStore.getState().user;
+   const router=useRouter()
+    const logoutFunc = useServerFn(logoutUser);
+    const handleClick = () => {
+      logoutFunc().then(()=>{
+    useAuthStore.setState({isAuthenticated:false,user:null})
+        router.navigate({to:"/account"})
+      })
+    };
   return (
- <Navbar className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand href="#home">Navbar with text</Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text>
-            Signed in as: <a href="#login">Mark Otto</a>
-          </Navbar.Text>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+ <nav className="flex justify-between p-4 bg-gray-200">
+      <div className="flex gap-4">
+        <Link to="/">Home</Link>
+        <Link to="/posts">All Posts</Link>
+        <Link to="/">About</Link>
+      </div>
+      <div className="flex gap-4">
+        {isAuthenticated ? (
+            <>
+          <button
+            onClick={handleClick}
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Logout
+          </button>
+          {currentUser &&
+          <div>
+<h2>
+    {currentUser.firstName}
+</h2>
+          </div>}
+          </>
+        ) : (
+          <span className="flex gap-4">
+            <Link to="/account">Login</Link>
+            <Link to="/account/register">Register</Link>
+          </span>
+        )}
+      </div>
+    </nav>
   );
-}
-
+};

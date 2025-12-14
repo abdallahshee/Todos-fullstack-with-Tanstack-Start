@@ -9,4 +9,9 @@ export type PostDTO=yup.InferType<typeof PostSchema>
 
 
 
-
+export const searchSchema = yup.object({
+  status: yup
+    .string()
+    .oneOf(["Pending", "Published", "Rejected"])
+    .optional(),
+});

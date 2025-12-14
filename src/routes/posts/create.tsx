@@ -64,7 +64,7 @@ function RouteComponent() {
         }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Title</Form.Label>
               <Form.Control
                 type="text"
                 name="title"
@@ -82,9 +82,9 @@ function RouteComponent() {
               </ErrorMessage>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Description</Form.Label>
               <Form.Control
-                type="textarea"
+               as="textarea" rows={3}
                 name="description"
                 value={values.description}
                 onChange={handleChange}

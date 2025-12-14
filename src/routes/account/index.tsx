@@ -39,7 +39,7 @@ function RouteComponent() {
     console.log(values);
     m.mutate(values);
   };
-  const [showPassword,setShowPassword]=useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <Formik
       initialValues={initialValues}
@@ -75,52 +75,46 @@ function RouteComponent() {
             </ErrorMessage>
           </Form.Group>
 
-
-
-<Form.Group className="mb-3">
-      <Form.Label>Password</Form.Label>
-
-      <InputGroup>
-        <Form.Control
-          type={showPassword ? "text" : "password"}
-          placeholder="Enter password"
-        />
-
-        <Button
-          variant="outline-secondary"
-          onClick={() => setShowPassword((prev) => !prev)}
-        >
-         {showPassword ? <EyeSlash /> : <Eye />}
-        </Button>
-      </InputGroup>
-    </Form.Group>
-
-          {/* PASSWORD */}
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              isInvalid={!!errors.password && touched.password}
-            />
-            <ErrorMessage name="password">
-              {(msg) => (
-                <Form.Control.Feedback type="invalid">
-                  {msg}
-                </Form.Control.Feedback>
-              )}
-            </ErrorMessage>
+
+            <InputGroup>
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                isInvalid={!!errors.password && touched.password}
+              />
+
+              <Button
+                variant="outline-secondary"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <EyeSlash /> : <Eye />}
+              </Button>
+              <ErrorMessage name="password">
+                {(msg) => (
+                  <Form.Control.Feedback type="invalid">
+                    {msg}
+                  </Form.Control.Feedback>
+                )}
+              </ErrorMessage>
+            </InputGroup>
           </Form.Group>
+
           <Form.Group className="3">
             <Button type="submit" className="w-100" disabled={m.isPending}>
               {m.isPending ? "Logging in..." : "Login"}
             </Button>
           </Form.Group>
           <Form.Group className="mt-3">
-            <h5>Dont have an account <Link to="/account/register"> Click Here</Link> to register</h5>
+            <h5>
+              Dont have an account{" "}
+              <Link to="/account/register"> Click Here</Link> to register
+            </h5>
           </Form.Group>
         </Form>
       )}
